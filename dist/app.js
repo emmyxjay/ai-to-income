@@ -1,37 +1,4 @@
 'use strict';
-const dialog = document.querySelector('#reservation-dialog');
-// The private review URL lets the owner test the Dodo sandbox without opening public enrollment.
-const reviewCheckoutUrl = 'https://test.checkout.dodopayments.com/buy/pdt_0Npnli3CxiL2AhkDNaDsx?quantity=1';
-const reviewCheckoutIsReady = (() => {
-  try {
-    const url = new URL(reviewCheckoutUrl);
-    return new URLSearchParams(window.location.search).get('payment-review') === '1' &&
-      url.protocol === 'https:' && url.hostname === 'test.checkout.dodopayments.com' && url.pathname.startsWith('/buy/');
-  } catch {
-    return false;
-  }
-})();
-let reservationTrigger = null;
-document.querySelectorAll('[data-reserve]').forEach(button => {
-  button.addEventListener('click', () => {
-    if (reviewCheckoutIsReady) {
-      window.location.assign(reviewCheckoutUrl);
-      return;
-    }
-    reservationTrigger = button;
-    dialog.showModal();
-    document.body.classList.add('modal-open');
-  });
-});
-document.querySelector('.close-dialog').addEventListener('click', () => dialog.close());
-dialog.addEventListener('click', event => {
-  const bounds = dialog.getBoundingClientRect();
-  if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) dialog.close();
-});
-dialog.addEventListener('close', () => {
-  document.body.classList.remove('modal-open');
-  reservationTrigger?.focus();
-});
 const tabs = [...document.querySelectorAll('[role="tab"]')];
 function activateTab(index, focus = false) {
   tabs.forEach((tab, current) => {
@@ -91,8 +58,6 @@ window.addEventListener('load', () => {
   else setTimeout(applyVideoState, 500);
 }, { once: true });
 
-// The preview offers useful destinations while paid reservations are unavailable.
-document.getElementById('dialog-course-link').addEventListener('click', () => dialog.close());
 const copyButton = document.getElementById('copy-reply');
 copyButton.addEventListener('click', async () => {
   const reply = document.getElementById('sample-reply');

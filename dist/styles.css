@@ -405,3 +405,5 @@ dialog{max-height:calc(100svh - 32px);overflow-y:auto;padding-top:48px}
 
 /* Fit the full featured business name inside the record label. */
 #panel-1 .record-center span{font-size:7px;letter-spacing:.2px;line-height:1.4}
+
+.questions-page .questions-checkout{display:flex;width:max-content;margin-top:24px}
