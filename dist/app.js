@@ -1,8 +1,23 @@
 'use strict';
 const dialog = document.querySelector('#reservation-dialog');
+// The private review URL lets the owner test the Dodo sandbox without opening public enrollment.
+const reviewCheckoutUrl = 'https://test.checkout.dodopayments.com/buy/pdt_0Npnli3CxiL2AhkDNaDsx?quantity=1';
+const reviewCheckoutIsReady = (() => {
+  try {
+    const url = new URL(reviewCheckoutUrl);
+    return new URLSearchParams(window.location.search).get('payment-review') === '1' &&
+      url.protocol === 'https:' && url.hostname === 'test.checkout.dodopayments.com' && url.pathname.startsWith('/buy/');
+  } catch {
+    return false;
+  }
+})();
 let reservationTrigger = null;
 document.querySelectorAll('[data-reserve]').forEach(button => {
   button.addEventListener('click', () => {
+    if (reviewCheckoutIsReady) {
+      window.location.assign(reviewCheckoutUrl);
+      return;
+    }
     reservationTrigger = button;
     dialog.showModal();
     document.body.classList.add('modal-open');
