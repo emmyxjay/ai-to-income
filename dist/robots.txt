@@ -1,6 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /*?payment-review=
-Disallow: /*&payment-review=
-
 Sitemap: https://www.aitoincome.club/sitemap.xml
